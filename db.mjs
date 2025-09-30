@@ -19,5 +19,49 @@ export const uploadData = async (payload) => {
       .update({ updated_at: date, [variable]: val })
       .eq("id", id);
   }
-  return "good";
 };
+
+// const channel = supabase
+//   .channel("sensecap_latest_updates")
+//   .on(
+//     "postgres_changes",
+//     {
+//       event: "UPDATE",
+//       schema: "public",
+//       table: "sensecap_latest",
+//     },
+//     async (payload) => {
+//       if (payload.old.updated_at !== payload.new.updated_at) {
+//         // The old record contains the values before the update
+//         const recordToInsert = {
+//           ...payload.old,
+//           sensecap_id: payload.old.id,
+//         };
+
+//         // Assuming 'sensecap_records' has its own auto-incrementing primary key,
+//         // we remove the 'id' from the old record to avoid conflicts.
+//         // If your 'sensecap_records' table is designed to use the same id,
+//         // you can remove the following line.
+//         delete recordToInsert.id;
+//         c;
+
+//         const { error } = await supabase
+//           .from("sensecap_records")
+//           .insert(recordToInsert);
+
+//         if (error) {
+//           console.error("Error inserting old record:", error);
+//         } else {
+//           console.log("Archived old record:", recordToInsert);
+//         }
+//       }
+//     }
+//   )
+//   .subscribe((status, err) => {
+//     if (status === "SUBSCRIBED") {
+//       console.log("Subscribed to sensecap_latest updates!");
+//     }
+//     if (status === "CHANNEL_ERROR") {
+//       console.error("Subscription error:", err);
+//     }
+//   });

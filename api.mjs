@@ -36,8 +36,6 @@ const options = {
 const client = mqtt.connect(`mqtt://${host}:${port}`, options);
 
 client.on("connect", () => {
-  console.log("Connected to broker");
-
   const topic = `/device_sensor_data/${sensecap_id}/+/+/+/+`;
   client.subscribe(topic, (err) => {
     if (err) {
