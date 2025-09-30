@@ -1,7 +1,7 @@
 import mqtt from "mqtt";
 import { sensecap_api_key, sensecap_id } from "./credentials.mjs";
 import { getDevices, uploadData } from "./db.mjs";
-import { hr, parser } from "./helpers.mjs";
+import { hr, now, parser } from "./helpers.mjs";
 
 const host = "sensecap-openstream.seeed.cc"; // same as -h
 const port = 1883; // try 8883 if TLS is required
@@ -39,16 +39,15 @@ client.on("connect", () => {
   const topic = `/device_sensor_data/${sensecap_id}/+/+/+/+`;
   client.subscribe(topic, (err) => {
     if (err) {
-      console.error("Subscribe error:", err);
+      console.error(`${now()}, Subscribe error:`, err);
     } else {
-      console.log(`Subscribed to ${topic}`);
+      console.log(`${now()}, Subscribed to ${topic}`);
     }
   });
 });
 
 client.on("message", (topic, message) => {
-  const objmsg = JSON.parse(message.toString());
-  const parsed = parser(topic, objmsg, devices);
+  const parsed = parser(topic, message.toString(), devices);
   if (parsed) {
     uploadData(parsed);
   }
