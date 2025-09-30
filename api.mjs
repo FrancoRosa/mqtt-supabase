@@ -49,7 +49,6 @@ client.on("connect", () => {
 client.on("message", (topic, message) => {
   const objmsg = JSON.parse(message.toString());
   const parsed = parser(topic, objmsg, devices);
-  console.log(parsed);
   if (parsed) {
     uploadData(parsed);
   }
